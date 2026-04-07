@@ -30,27 +30,37 @@ To implement HASH ALGORITHM
 ```C
 #include <stdio.h>
 #include <string.h>
-void computeSimpleHash(const char *message, unsigned char *hash) {
+
+#define HASH_SIZE 1
+
+void computeHash(const char *message, unsigned char *hash) {
     unsigned char temp = 0;
+
     for (int i = 0; message[i] != '\0'; i++) {
-        temp = temp ^ message[i]; 
-        temp += message[i];       
+        temp = temp ^ message[i];
+        temp += message[i];
     }
+
     *hash = temp;
 }
+
 int main() {
-    char message[256];     
-    unsigned char hash;     
-    char receivedHash[3];
+    char message[100];
+    unsigned char hash;
+    unsigned char receivedHash;
+
     printf("Enter the message: ");
     scanf("%s", message);
-    computeSimpleHash(message, &hash);
-    printf("Computed Hash (in hex): %02x\n", hash);
-    printf("Enter the received hash (in hex): ");
-    scanf("%s", receivedHash);
-    unsigned int receivedHashValue;
-    sscanf(receivedHash, "%02x", &receivedHashValue);
-    if (hash == receivedHashValue) {
+
+    computeHash(message, &hash);
+
+    printf("Computed Hash (in hex): ");
+    printf("%02x\n", hash);
+
+    printf("Enter the received hash (as hex): ");
+    scanf("%02hhx", &receivedHash);
+
+    if (hash == receivedHash) {
         printf("Hash verification successful. Message is unchanged.\n");
     } else {
         printf("Hash verification failed. Message has been altered.\n");
@@ -58,7 +68,6 @@ int main() {
 
     return 0;
 }
-
 ```
 
 ## Output:
